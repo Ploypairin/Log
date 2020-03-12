@@ -1,5 +1,22 @@
 ### การรีโมททำ 2 เครื่อง ###
 sshpass -p "telogic" ssh telogic@10.235.139.95 " ไฟล์ก้อนใหญ่ (/home/telogic/application/hsc/log/hsc_log_2020031214.txt) "
+**telogic@10.235.139.95 ----> เครื่องปลายทาง
+cat /home/telogic/application/hsc/log/hsc_log_$(date +'%Y%m%d%H').txt"|_________ Code เรา
 *******************************************************************************************************************************
-cat /home/telogic/application/hsc/log/hsc_log_2020031214.txt |grep "$(date -d "10 min ago" +'%Y%m%d %H:%m '| 
-cut -b 1-13 )"| grep "REL","8090"| awk '{print $3}' | awk -F ',' '{print $4"_"$5}'| sort | uniq -c
+//CODE\\ hsc_log_REL_count.sh //\\
+#!/bin/sh
+PATH=/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/vos1/.local/bin:/home/vos1/bin
+File_xml=/NAS/HSC/hsc_log_REL_count.xml
+echo "<prtg>" > $File_xml
+for i in $(sshpass -p "telogic" ssh telogic@10.235.139.95 "cat /home/telogic/application/hsc/log/hsc_log_$(date -d '10 min ago' +'%Y%m%d%H').txt" |grep "$(date -d "10 min ago" +'%Y%m%d %H:%m '| cut -b 1-13 )"| grep "REL","8090"| awk '{print $3}' | awk -F ',' '{print ":"$1"_"$4"_"$5}'| sort | uniq -c | sed 's/ :/:/g')
+do
+        value_count=$(echo $i|awk -F ":" '{print $1}')
+        name_count=$(echo $i|awk -F ":" '{print $2}')
+        echo "<result><channel>$name_count</channel><value>$value_count</value><customunit>transection</customunit></result>" >> $File_xml
+done 
+echo "</prtg>" >> $File_xml
+
+chmod 777 $File_xml
+
+//CODE\\ cat_hsc_log_REL_count.sh //
+cat /NAS/HSC/hsc_log_REL_count.xml

@@ -1,0 +1,2 @@
+cat /home/telogic/application/hsc/log/hsc_log_2020031214.txt |grep "$(date -d "10 min ago" +'%Y%m%d %H:%m '| 
+cut -b 1-13 )"| grep "REL","8090"| awk '{print $3}' | awk -F ',' '{print $4"_"$5}'| sort | uniq -c

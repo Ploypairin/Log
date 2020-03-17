@@ -13,3 +13,6 @@ Past_Time2=(date -d '90 day ago' +'%Y%m%d')
               #zip "$file.zip" $file
               #rm $file
           fi
+          
+    find /centralizedlog/PDS4LGWA9*/af* -type f -name "date +%Y%m%d" -mtime +7 | xargs zip -mtime +7 ".zip" {} \;
+    find /centralizedlog/PDS4LGWA9*/af* -type f -name "*" `date -d '7 day ago' +'%Y%m%d'`"*" | xargs gzip `date -d '7 day ago' +'%Y%m%d'`".gz" {} \;

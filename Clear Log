@@ -1,0 +1,15 @@
+Log_path=$(/centralizedlog/PDS4LGWA9*/af*)
+Current_Time=(date +%Y%m%d)
+Past_Time1=(date -d '7 day ago' +'%Y%m%d')
+Past_Time2=(date -d '90 day ago' +'%Y%m%d')
+
+     for file in $Log_path
+     do  
+         if [ "$file"=="Past_Time1" ]
+          then 
+              zip "$file.zip" $file
+          #elif [ "$file"=="Past_Time2" ] 
+           #then
+              #zip "$file.zip" $file
+              #rm $file
+          fi

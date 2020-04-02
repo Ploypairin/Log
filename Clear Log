@@ -1,18 +1,13 @@
-Log_path=$(/centralizedlog/PDS4LGWA9*/af*)
-Current_Time=(date +%Y%m%d)
-Past_Time1=(date -d '7 day ago' +'%Y%m%d')
-Past_Time2=(date -d '90 day ago' +'%Y%m%d')
+#!/bin/sh 
 
-     for file in $Log_path
-     do  
-         if [ "$file"=="Past_Time1" ]
-          then 
-              zip "$file.zip" $file
-          #elif [ "$file"=="Past_Time2" ] 
-           #then
-              #zip "$file.zip" $file
-              #rm $file
-          fi
-          
-    find /centralizedlog/PDS4LGWA9*/af* -type f -name "date +%Y%m%d" -mtime +7 | xargs zip -mtime +7 ".zip" {} \;
-    find /centralizedlog/PDS4LGWA9*/af* -type f -name "*" `date -d '7 day ago' +'%Y%m%d'`"*" | xargs gzip `date -d '7 day ago' +'%Y%m%d'`".gz" {} \;
+  ######## gzip ########
+     gzip $(ls -lrt path_log | grep $(date -d '7 day ago' +'%Y%m%d')/*)
+  
+  ####### Romove log #####
+     n_days=$(date -d "1 month ago" +%Y%m%d)
+     list="/opt/Assign/Log/"
+
+     for f in $(ls -d $list[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]* | xargs -n 1 basename | tr -d ":" )
+     do
+          (( $f <= $n_days )) && rm -rf "$list$f"
+     done

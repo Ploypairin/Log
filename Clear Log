@@ -11,3 +11,6 @@
      do
           (( $f <= $n_days )) && rm -rf "$list$f"
      done
+
+day=$(date + %Y%M%D)
+(($f <= $day)) echo $Hostname,

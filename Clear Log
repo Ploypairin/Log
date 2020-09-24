@@ -12,5 +12,5 @@
           (( $f <= $n_days )) && rm -rf "$list$f"
      done
 
-day=$(date + %Y%M%D)
-(($f <= $day)) echo $Hostname,
+  ####### Purge File/Directory #######
+     cd /Users/ploypairinmorya/usr/ivr_applog/ && find .  -maxdepth 1 -mindepth 1 -type d -mtime 0 -exec rm -rf {} \;
